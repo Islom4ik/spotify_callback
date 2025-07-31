@@ -33,11 +33,14 @@ def get_code(user_id):
         row = cursor.fetchone()
         return row[0] if row else None
 
-@app.route("/callback/<int:user_id>")
-def callback(user_id):
+@app.route("/callback")
+def callback():
     code = request.args.get("code")
-    if not code:
-        return "Missing code", 400
+    user_id = request.args.get("state")
+    print(user_id, code)
+
+    if not code or not user_id:
+        return "Missing parameters", 400
 
     save_code(user_id, code)
     print(f"[CALLBACK] user_id={user_id}, code={code}")
