@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 
 app = Flask(__name__)
 DB_PATH = "auth_codes.db"
@@ -44,7 +44,7 @@ def callback():
 
     save_code(user_id, code)
     print(f"[CALLBACK] user_id={user_id}, code={code}")
-    return f"<h1>✅ Авторизация прошла</h1><p>user_id: {user_id}</p><p>code: {code}</p>", 200
+    return redirect(f"https://t.me/{os.environ.get('BOT_USERNAME', 'AusensBot')}?start=sp_auth_{user_id}")
 
 
 @app.route("/get/<int:user_id>")
